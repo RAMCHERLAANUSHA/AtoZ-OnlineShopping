@@ -1,4 +1,7 @@
 from django.db import models
+import random
+import string
+from django.contrib.auth.models import User as Admin
 
 # Create your models here.
 
@@ -61,3 +64,15 @@ class Wishlist(models.Model):
 
     class Meta:
         unique_together = ('user', 'item')
+
+def generate_otp():
+    return ''.join(random.choices(string.digits, k=6))
+
+class OTP(models.Model):
+    Admin = models.ForeignKey(Admin, on_delete=models.CASCADE)
+    otp = models.CharField(max_length=6, default=generate_otp)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_valid(self):
+        # OTP is valid for 5 minutes
+        return (timezone.now() - self.created_at).seconds < 300

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body{
+            background-color: #000000;
+            width: 99%;
+        }
+        .rside{
+            background-color: #000000;
+            height: 97vh;
+        }
+        @keyframes move-shadow {
+            0% {
+                box-shadow: 2px 2px 4px #cfaa08, 2px 2px 4px rgba(180, 180, 3, 0.16);;
+            }
+            25% {
+                box-shadow: -2px 2px 4px #cfaa08, -2px 2px 4px rgba(180, 180, 3, 0.16);;
+            }
+            50% {
+                box-shadow: -2px -2px 4px #cfaa08, -2px -2px 4px rgba(180, 180, 3, 0.16);;
+            }
+            75% {
+                box-shadow: 2px -2px 4px #cfaa08, 2px -2px 4px rgba(180, 180, 3, 0.16);;
+            }
+            100% {
+                box-shadow: 2px 2px 4px #cfaa08, 2px 2px 4px rgba(180, 180, 3, 0.16);;
+            }
+        }
+        .iside{
+            background-color: black;
+            color: white;
+            /* border-radius: 16px; */
+            box-shadow: 2px 2px 4px #fff,
+                2px 2px 4px rgba(180, 180, 3, 0.16);
+            width: 80%;
+            height: 40%;
+            animation: move-shadow 1s ease-in-out infinite;
+        }
+        h3{
+            text-align: center;
+        }
+        input{
+            background-color: black;
+            border: none;
+            border-bottom: solid 2px #cfaa08;
+            width: 100%;
+            /* padding-top: 10%; */
+            text-align: left;
+            border-radius: 16px;
+        }
+        input::placeholder{
+            color: white;
+        }
+        input:hover{
+            color: white;
+            background-color: #cfaa08;
+        }
+        .wpic{
+            height: 220px;
+            width: 200px;
+            padding: none;
+        }
+        .imgpic{
+            /* padding-bottom: 3%; */
+            padding-left: 30%;
+            padding-top: 5%;
+        }
+        .loginbox{
+            padding-left: 20%;
+            padding-top: 6%;
+            padding-right: 0;
+        }
+        .sign{
+            padding-top: 10%;
+        }
+        .signbtn{
+            width: 100%;
+            border: none;
+            border-radius: 16px;
+            background-color: #cfaa08;
+        }
+        .wlpic{
+            width: 500px;
+            height: 600px;
+        }
+        .imgpiclside{
+            padding-left: 10%;
+        }
+        .card-body{
+            width: 80%;
+        }
+        .error-message{
+            padding-left: 25%;
+            padding-top: 2%;
+        }
+    </style>
+</head>
+<body>
+    <div class="wholepage">
+        <div class="row">
+            <div class="col-6">
+                <div class="lpicside">
+                    <div class="imgpiclside">
+                        {% load static %}
+                        <img src="{% static 'images/lipc.jpg' %}" class="wlpic">  
+                    </div>  
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="container rside">
+                    <div class="imgpic">
+                        {% load static %}
+                        <img src="{% static 'images/atoz.png' %}" class="wpic">  
+                    </div>       
+                    <div class="loginbox">           
+                        <div class="card align-items-center iside">
+                            <div class="card-body">
+                                <P class="mx-3">Welcome!!! Admin...</P>
+                                <h3 class="mb-3">SIGN IN</h3>
+                                <form class="formin" action="" method="POST">
+                                    <div>
+                                        {% csrf_token %}
+                                        <input type="email" id="email" name="email" placeholder="Email"  autocomplete="email"
+                                                required>
+                                    </div>
+                                    <p class="mb-3"></p>
+                                    <div>
+                                        <input type="password" id="password" name="password" placeholder="Password" autocomplete="new-password" 
+                                        required>
+                                    </div>
+                                    <div class="sign">
+                                        <button type="submit" class="signbtn" id="signup">Sign In</button>
+                                    </div>
+                                    <div>
+                                        <p class="error-message">{{comment}}</p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
