@@ -114,6 +114,7 @@
             color: white;
         }
         a{
+            /* text-decoration: none; */
             color: #cfaa08;
         }
         .error-message{
@@ -174,7 +175,7 @@
                                 <button type="submit" id="signup" class="px-3">{% if btval %} Update {%else%} Register {% endif %}</button>
                             </div>
                         </form>
-                        <p class="btmp">If account already Exist<a href = "{% url 'seller_signin' %}" class="px-2">SignIn</a></p>
+                        <p class="btmp">If account already Exist<a href = "{% url 'user_signin' %}" class="px-2">SignIn</a></p>
                     </div>
                     <p class="error-message">{{data}}</p>
                 </div>

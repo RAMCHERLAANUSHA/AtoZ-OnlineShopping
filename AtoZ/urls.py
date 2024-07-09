@@ -33,6 +33,8 @@ urlpatterns = [
     path('delete_category/<int:category_id>/',views.category_delete, name='delete_category'),
     path('seller_signup/',views.seller_signup, name='seller_signup'),
     path('seller_signin/',views.seller_signin, name='seller_signin'),
+    path('user_signup/',views.user_signup, name='user_signup'),
+    path('user_signin/',views.user_signin, name='user_signin'),
 
 ]
 

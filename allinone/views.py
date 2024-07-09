@@ -10,10 +10,12 @@ from django.contrib import messages
 
 
 # Create your views here.
+
 # =================================================================================================================
 
 def homeView(request):
-    return (request, 'HomePage.html')
+    return render(request, 'HomePage.html')
+
 # =================================================================================================================
 
 def validate_mobile_number(value):
@@ -303,9 +305,48 @@ def seller_signin(request):
             if check_password(password, seller.password):
                 return redirect('')
             else:
-                context["error_message"] = "Incorrect password."
+                context["comment"] = "Incorrect password."
         except Seller.DoesNotExist:
-            context["error_message"] = "Seller not found."
+            context["comment"] = "Seller not found."
     return render(request, 'SellerSignin.html', context)
 
 # =======================================================================================================================
+
+def user_signup(request):
+    context = {}
+    context['form'] = UserForm()
+    context['data'] = ''
+    if request.method == 'POST':
+        if not  validate_mobile_number(request.POST.get("phoneNumber")) and not validate_password(request.POST.get("password")):
+            context['data'] = "Please enter a 10-digit mobile number and Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
+            return render(request,'UserSignup.html',context)
+        elif not validate_password(request.POST.get("password")):
+            context['data'] = "Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
+            return render(request,'UserSignup.html',context)
+        elif not  validate_mobile_number(request.POST.get("phoneNumber")):
+            context['data'] = "Please enter a 10 digit mobile number"
+            return render(request,'UserSignup.html',context)
+        form = UserForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            context['data']=f"{request.POST.get('name')} registered succefully"
+            return render(request,'UserSignup.html',context)
+        else:
+            context['data'] = "Something wrong in given data"
+            return render(request,'UserSignup.html',context)
+    return render(request,'UserSignup.html',context)
+
+def user_signin(request):
+    context = {}
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        try:
+            user = User.objects.get(email=email)
+            if check_password(password, user.password):
+                return redirect('')
+            else:
+                context["comment"] = "Incorrect password."
+        except User.DoesNotExist:
+            context["comment"] = "User not found."
+    return render(request, 'UserSignin.html', context)

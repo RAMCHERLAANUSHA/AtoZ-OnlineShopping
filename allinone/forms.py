@@ -19,6 +19,12 @@ class SellerForm(forms.ModelForm):
         fields = "__all__"
 
 class UserForm(forms.ModelForm):
+    gender = forms.ChoiceField(choices=(
+            ("Select",'Select'),
+            ("Male","Male"),
+            ("Female","Female"),
+            ("Other","Other"),
+    ))
     class Meta:
         model = User
         fields = "__all__"

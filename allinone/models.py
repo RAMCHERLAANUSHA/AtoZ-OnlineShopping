@@ -24,7 +24,7 @@ class User(models.Model):
     email = models.EmailField(unique=True)
     gender = models.CharField(max_length=6)
     phoneNumber = models.BigIntegerField()
-    Address = models.TextField(max_length=120)
+    address = models.CharField(max_length=120)
     username = models.CharField(max_length=30,unique=True)
     password = models.CharField(max_length=100)
     image = models.ImageField(upload_to='images',default='images/p1.png')
