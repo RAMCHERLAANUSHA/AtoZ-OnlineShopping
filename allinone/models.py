@@ -2,24 +2,25 @@ from django.db import models
 import random
 import string
 from django.contrib.auth.models import User as Admin
-
+from django.utils import timezone
+from datetime import timedelta
 # Create your models here.
 
 class AdminCategory(models.Model):
-    category = models.CharField(max_length=50)
+    category = models.CharField(max_length=50, unique=True)
 
 class Seller(models.Model):
-    s_name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60)
     email = models.EmailField(unique=True)
     gender = models.CharField(max_length=6)
     phoneNumber = models.BigIntegerField()
-    Address = models.TextField(max_length=120)
+    address = models.CharField(max_length=120)
     username = models.CharField(max_length=30,unique=True)
     password = models.CharField(max_length=100)
     image = models.ImageField(upload_to='images',default='images/p1.png')
 
 class User(models.Model):
-    u_name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60)
     email = models.EmailField(unique=True)
     gender = models.CharField(max_length=6)
     phoneNumber = models.BigIntegerField()
@@ -69,10 +70,18 @@ def generate_otp():
     return ''.join(random.choices(string.digits, k=6))
 
 class OTP(models.Model):
-    Admin = models.ForeignKey(Admin, on_delete=models.CASCADE)
-    otp = models.CharField(max_length=6, default=generate_otp)
+    email = models.EmailField(null=True)
+    otp = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"OTP: {self.otp} for Email: {self.email}"
+    
     def is_valid(self):
-        # OTP is valid for 5 minutes
-        return (timezone.now() - self.created_at).seconds < 300
+        expiration_time = self.created_at + timedelta(minutes=10)  # Set OTP expiration time
+        return timezone.now() <= expiration_time
+
+class ItemAccess(models.Model):  
+    item_id = models.OneToOneField(Item,on_delete=models.CASCADE)
+    access = models.BooleanField()
+    comment = models.TextField(default='Item denied')

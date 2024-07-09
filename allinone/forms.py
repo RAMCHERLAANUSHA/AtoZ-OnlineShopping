@@ -1,5 +1,6 @@
 from django import forms
-from models import *
+from .models import *
+from django.forms import TextInput,EmailInput,NumberInput,ImageField
 
 class AdminCategoryForm(forms.ModelForm):
     class Meta:
@@ -7,6 +8,12 @@ class AdminCategoryForm(forms.ModelForm):
         fields = "__all__"
 
 class SellerForm(forms.ModelForm):
+    gender = forms.ChoiceField(choices=(
+            ("Select",'Select'),
+            ("Male","Male"),
+            ("Female","Female"),
+            ("Other","Other"),
+    ))
     class Meta:
         model = Seller
         fields = "__all__"
@@ -68,4 +75,22 @@ class WishlistForm(forms.ModelForm):
         self.fields['item'].label_from_instance = lambda obj: f"{obj.item}"
         self.fields['user'].queryset = User.objects.all()
         self.fields['user'].label_from_instance = lambda obj: f"{obj.user}"
+
+class EmailForm(forms.Form):
+    email = forms.EmailField()
+
+class OTPForm(forms.Form):
+    otp = forms.CharField(max_length=6)
+
+class PasswordResetForm(forms.Form):
+    new_password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput)
+
+class ItemAccessForm(forms.ModelForm):
+    class Meta:
+        model = ItemAccess
+        fields = ['access', 'comment']
+
+
+
 

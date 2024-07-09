@@ -22,7 +22,18 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('adminlogin/',views.adminLogin),
+    path('homepage/',views.homeView, name='homepage'),
+    path('adminlogin/',views.adminLogin, name='adminLogin'),
+    path('password-reset/', views.password_reset_request, name='password_reset_request'),
+    path('validate-otp/', views.validate_otp, name='validate_otp'),
+    path('reset-password/', views.password_reset_complete, name='password_reset_complete'),
+    path('adminList/', views.admin_list, name = 'admin_list'),
+    path('add_category/', views.add_category, name='add_category'),
+    path('messages/', views.message_list, name='message_list'),
+    path('delete_category/<int:category_id>/',views.category_delete, name='delete_category'),
+    path('seller_signup/',views.seller_signup, name='seller_signup'),
+    path('seller_signin/',views.seller_signin, name='seller_signin'),
+
 ]
 
 if settings.DEBUG:

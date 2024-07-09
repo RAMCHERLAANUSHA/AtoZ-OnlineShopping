@@ -100,6 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -139,5 +140,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'anushareddy8677@gmail.com'
-EMAIL_HOST_PASSWORD = 'Anusha@123'
+EMAIL_HOST_PASSWORD = 'npcd jwhk lotx wvwt'
 DEFAULT_FROM_EMAIL = 'anushareddy8677@gmail.com'

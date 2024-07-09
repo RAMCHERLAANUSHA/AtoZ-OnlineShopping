@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .wpic{
+            width: 40px;
+            height: 40px;
+        }
+        .logout{
+            width: 80px;
+            height: 30px;
+            background-color: black;
+            color: white;
+            box-shadow: 2px 2px 2px #cfaa08,
+                2px 2px 2px #cfaa08;
+        }
+        #logbtn{
+            margin-top: -8px;
+            color: white;
+        }
+        .upperbtn{
+            background-color: #cfaa08;
+            color: black;
+            border: none;
+            font-weight: 700;
+            padding-bottom: 8px;
+        }
+        .upperbtn:hover{
+            background-image: linear-gradient(transparent calc(100% - 2px), black 5px);
+        }
+        .btmnav{
+            padding-top: 5%;
+        }
+        .productbtn{
+            padding-left: 160px;
+        }
+        .btmdiv{
+            background-color: #cfaa08;
+        }
+        .loginbox {
+            padding-left: 20%;
+            padding-top: 6%;
+            padding-right: 0;
+        }
+        .iside {
+            background-color: black;
+            color: white;
+            box-shadow: 2px 2px 4px #cfaa08,
+                2px 2px 4px rgba(180, 180, 3, 0.16);
+            width: 100%;
+            height: 40%;
+            margin-left: -15%;
+            animation: move-shadow 1s ease-in-out infinite;
+        }
+        h3 {
+            text-align: center;
+        }
+
+        input {
+            background-color: black;
+            border: none;
+            border-bottom: solid 2px #cfaa08;
+            width: 100%;
+            text-align: left;
+            border-radius: 16px;
+            color: white;
+        }
+
+        input::placeholder {
+            color: black;
+        }
+
+        input:hover {
+            color: white;
+            background-color: black;
+        }
+        .sign {
+            padding-top: 2%;
+            margin-left: 70%;
+        }
+
+        .signbtn {
+            width: 60%;
+            border: none;
+            border-radius: 16px;
+            background-color: #cfaa08;
+        }
+        .card{
+            width: 90%;
+            margin-top: 60px;
+        }
+
+        .wbtmpic {
+            height: 400px;
+            width: 450px;
+            padding: none;
+        }
+        .imgpic{
+            margin-left: 30px;
+        }
+        .table{
+            width: 80%;
+            margin-left: 10%;
+        }
+        .fa{
+            background-color: red;
+            padding: 5px;
+            color: white;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg d-flex flex-row bg-black fixed-top">
+        <div class="container-fluid justify-content-start">
+            {% load static %}
+            <img src="{% static 'images/atoz.png' %}" class="wpic"></p>
+        </div>
+        <ul class="navbar-nav collapse navbar-collapse" id="navbarText">
+            <li class="nav-item mx-2">
+                <button  class="logout"><a class="nav-link active" id="logbtn" href="/adminlogin/" onclick="logout()">Logout</a></button>
+            </li>
+        </ul>
+    </nav>
+    <div class="btmdiv">
+        <div class="btmnav">
+            <div class="row">
+                <div class="col-4 productbtn">
+                    <a href="{% url 'admin_list' %}"><button class="upperbtn">Products</button></a>
+                </div>
+                <div class="col-4 productbtn">
+                    <a href="{% url 'add_category' %}"><button class="upperbtn">Categories</button></a>
+                </div>
+                <div class="col-4 productbtn">
+                    <a href="{% url 'message_list' %}"><button class="upperbtn">Messages</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="loginbox">
+                <div class="card align-items-center iside">
+                    <div class="card-body">
+                        <h3 class="mx-3">Add Category</h3>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="sign">
+                                <button type="submit" class="signbtn" id="signup">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                    <p class="error-message">{{comment}}</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="container rside">
+                <div class="imgpic">
+                    {% load static %}
+                    <img src="{% static 'images/category.jpg' %}" class="wbtmpic">
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Categories</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.category }}</td>
+                    <td>
+                        <a href="{% url 'delete_category' category_id=category.id  %}" onclick="deletebtn()">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        function deletebtn(){
+            alert("Category deleted successfully");
+        }
+    </script>
+</body>
+
+</html>
