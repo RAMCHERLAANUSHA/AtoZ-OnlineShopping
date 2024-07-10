@@ -35,6 +35,11 @@ urlpatterns = [
     path('seller_signin/',views.seller_signin, name='seller_signin'),
     path('user_signup/',views.user_signup, name='user_signup'),
     path('user_signin/',views.user_signin, name='user_signin'),
+    path('seller_itemform/<int:id>/',views.seller_itemform, name='seller_itemform'),
+    path('seller_update/<int:id>/',views.seller_update, name='seller_update'),
+    path('seller_products/<int:id>/',views.seller_products, name='seller_products'),
+    path('seller_messages/<int:id>/',views.seller_messages, name='seller_messages'),
+
 
 ]
 

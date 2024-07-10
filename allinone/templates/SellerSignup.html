@@ -167,7 +167,7 @@
                 <div class="card align-items-center">
                     <div class="card-body">
                         <h3 class="mx-3">{% if not btval %} SignUp {%else%} Update {% endif %}</h3>
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.as_p }}
                             <div class="sign">

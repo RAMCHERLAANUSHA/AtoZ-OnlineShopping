@@ -32,13 +32,13 @@ class UserForm(forms.ModelForm):
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = "__all__"
+        fields = ['name','description', 'photo', 'cost', 'category']
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['category'].queryset = AdminCategory.objects.all()
         self.fields['category'].label_from_instance = lambda obj: f"{obj.category}"
-        self.fields['seller'].queryset = Seller.objects.all()
-        self.fields['seller'].label_from_instance = lambda obj: f"{obj.seller}"
+        self.fields['name'].queryset = Seller.objects.all()
+        self.fields['name'].label_from_instance = lambda obj: f"{obj.name}"
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -54,11 +54,11 @@ class ReviewForm(forms.ModelForm):
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = "__all__"
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['seller'].queryset = Seller.objects.all()
-        self.fields['seller'].label_from_instance = lambda obj: f"{obj.seller}"
+        fields = ['message']
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['seller'].queryset = Seller.objects.all()
+    #     self.fields['seller'].label_from_instance = lambda obj: f"{obj.name}"
 
 class OrderForm(forms.ModelForm):
     class Meta:

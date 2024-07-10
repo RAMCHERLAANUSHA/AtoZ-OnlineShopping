@@ -17,7 +17,7 @@ class Seller(models.Model):
     address = models.CharField(max_length=120)
     username = models.CharField(max_length=30,unique=True)
     password = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images',default='images/p1.png')
+    image = models.ImageField(upload_to='images/',default='images/p1.png')
 
 class User(models.Model):
     name = models.CharField(max_length=60)
@@ -27,12 +27,12 @@ class User(models.Model):
     address = models.CharField(max_length=120)
     username = models.CharField(max_length=30,unique=True)
     password = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images',default='images/p1.png')
+    image = models.ImageField(upload_to='images/',default='images/p1.png')
 
 class Item(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    photo = models.ImageField(upload_to='item_photos/')
+    description = models.CharField(max_length=300)
+    photo = models.ImageField(upload_to='images/')
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(AdminCategory, on_delete=models.CASCADE)
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
@@ -51,7 +51,7 @@ class Review(models.Model):
 
 class Message(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
-    message = models.TextField()
+    message = models.CharField(max_length=900)
 
 class Order(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)

@@ -302,8 +302,8 @@ def seller_signin(request):
         password = request.POST.get("password")
         try:
             seller = Seller.objects.get(email=email)
-            if check_password(password, seller.password):
-                return redirect('')
+            if password == seller.password:
+                return redirect('/seller_itemform/{0}'.format(seller.id))
             else:
                 context["comment"] = "Incorrect password."
         except Seller.DoesNotExist:
@@ -343,10 +343,79 @@ def user_signin(request):
         password = request.POST.get("password")
         try:
             user = User.objects.get(email=email)
-            if check_password(password, user.password):
+            if password == user.password:
                 return redirect('')
             else:
                 context["comment"] = "Incorrect password."
         except User.DoesNotExist:
             context["comment"] = "User not found."
     return render(request, 'UserSignin.html', context)
+
+# ======================================================================================================================
+
+def seller_update(request,id):
+    context = {}
+    seller = Seller.objects.get(id=id)
+    context['form'] = SellerForm(request.POST or None, instance=seller)
+    context['data'] = ''
+    context['btval'] = 'Update'
+    if request.method == 'POST':
+        if not  validate_mobile_number(request.POST.get("phoneNumber")) and not validate_password(request.POST.get("password")):
+            context['data'] = "Please enter a 10-digit mobile number and Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
+            return render(request,'SellerSignup.html',context)
+        elif not validate_password(request.POST.get("password")):
+            context['data'] = "Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
+            return render(request,'SellerSignup.html',context)
+        elif not  validate_mobile_number(request.POST.get("phoneNumber")):
+            context['data'] = "Please enter a 10 digit mobile number"
+            return render(request,'SellerSignup.html',context)
+        form = SellerForm(request.POST,request.FILES,instance=seller)
+        if form.is_valid():
+            form.save()
+            context['data']= "details updated successfully"
+            return redirect('/seller_itemform/{0}'.format(seller.id))
+        else:
+            context['data'] = "Something wrong in given data"
+            return render(request,'SellerSignup.html',context)
+    return render(request,'SellerSignup.html',context)
+
+# ======================================================================================================================
+def seller_itemform(request,id):
+    context = {}
+    seller = Seller.objects.get(id=id)
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+           item = form.save(commit=False)
+           item.seller = seller
+           item.save()  
+           context['comment'] = 'Item added successfully.'
+        else:
+            context['comment'] = 'Something went wrong.'
+    else:
+        form = ItemForm()
+
+    context['form'] = form
+    context['seller'] = seller
+    return render(request, 'AddItem.html', context)
+
+def seller_products(request,id):
+    context = {}
+    seller = Seller.objects.get(id=id)
+    items = Item.objects.all()
+    context['seller'] = seller
+    context['items'] = items
+    return render(request, 'SellerProducts.html', context)
+
+def seller_messages(request,id):
+    context = {}
+    context['form'] = MessageForm
+    seller = Seller.objects.get(id=id)
+    messages = ItemAccess.objects.all()
+    context['seller'] = seller
+    context['messages'] = messages
+    return render(request, 'SellerMessages.html', context)
+
+# =======================================================================================================================
+
+    
