@@ -6,17 +6,13 @@ from django.core.mail import send_mail
 from .models import *
 from .forms import *
 from django.contrib.auth.hashers import make_password
-from django.contrib import messages
 
-
-# Create your views here.
-
-# =================================================================================================================
+# =================================================HomeView=============================================================
 
 def homeView(request):
     return render(request, 'HomePage.html')
 
-# =================================================================================================================
+# ================================================Validations===========================================================
 
 def validate_mobile_number(value):
     value = str(value)
@@ -43,27 +39,7 @@ def validate_password(password):
     
     return True
 
-# ================================================================================================================
-
-def adminLogin(request):
-    context = {}
-    context["comment"] = ''
-    if request.method == "POST":
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        try:
-            a1 = Admin.objects.get(email=email)
-            if check_password(password,a1.password):
-                return redirect('/adminList/')
-            else:
-                context["comment"] = "Incorrect password.."
-                return render(request,'AdminLogin.html', context)
-        except:
-            context["comment"] = "Admin not found.."
-            return render(request,'AdminLogin.html', context)
-    return render(request,'AdminLogin.html')
-
-# ==============================================================================================================
+# ===============================================Forgot Password(OTP)===================================================
 
 def send_otp_email(email):
     otp_code = generate_otp()  
@@ -208,7 +184,27 @@ def password_reset_complete(request):
 
     return render(request, 'ResetCompletion.html', context)
 
-# =================================================================================================================
+# ==============================================Admin-Login============================================================
+
+def adminLogin(request):
+    context = {}
+    context["comment"] = ''
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        try:
+            a1 = Admin.objects.get(email=email)
+            if check_password(password,a1.password):
+                return redirect('/adminList/')
+            else:
+                context["comment"] = "Incorrect password.."
+                return render(request,'AdminLogin.html', context)
+        except:
+            context["comment"] = "Admin not found.."
+            return render(request,'AdminLogin.html', context)
+    return render(request,'AdminLogin.html')
+
+# =================================================Admin-List==========================================================
 
 def admin_list(request):
     items = Item.objects.all()
@@ -239,8 +235,6 @@ def admin_list(request):
     }
     return render(request, 'AdminProducts.html', context)
 
-# ==================================================================================================================
-
 def add_category(request):
     context = {}
     if request.method == 'POST':
@@ -260,8 +254,6 @@ def category_delete(request, category_id):
     category.delete()
     return redirect('add_category')
 
-#========================================================================================================================
-
 def message_list(request):
     messages = Message.objects.all()
     context = {
@@ -269,7 +261,7 @@ def message_list(request):
     }
     return render(request, 'MessageList.html', context)
 
-#========================================================================================================================
+#===========================================Seller-SignIn-SignUp-Update=================================================
 
 def seller_signup(request):
     context = {}
@@ -310,49 +302,6 @@ def seller_signin(request):
             context["comment"] = "Seller not found."
     return render(request, 'SellerSignin.html', context)
 
-# =======================================================================================================================
-
-def user_signup(request):
-    context = {}
-    context['form'] = UserForm()
-    context['data'] = ''
-    if request.method == 'POST':
-        if not  validate_mobile_number(request.POST.get("phoneNumber")) and not validate_password(request.POST.get("password")):
-            context['data'] = "Please enter a 10-digit mobile number and Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
-            return render(request,'UserSignup.html',context)
-        elif not validate_password(request.POST.get("password")):
-            context['data'] = "Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
-            return render(request,'UserSignup.html',context)
-        elif not  validate_mobile_number(request.POST.get("phoneNumber")):
-            context['data'] = "Please enter a 10 digit mobile number"
-            return render(request,'UserSignup.html',context)
-        form = UserForm(request.POST,request.FILES)
-        if form.is_valid():
-            form.save()
-            context['data']=f"{request.POST.get('name')} registered succefully"
-            return render(request,'UserSignup.html',context)
-        else:
-            context['data'] = "Something wrong in given data"
-            return render(request,'UserSignup.html',context)
-    return render(request,'UserSignup.html',context)
-
-def user_signin(request):
-    context = {}
-    if request.method == "POST":
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        try:
-            user = User.objects.get(email=email)
-            if password == user.password:
-                return redirect('')
-            else:
-                context["comment"] = "Incorrect password."
-        except User.DoesNotExist:
-            context["comment"] = "User not found."
-    return render(request, 'UserSignin.html', context)
-
-# ======================================================================================================================
-
 def seller_update(request,id):
     context = {}
     seller = Seller.objects.get(id=id)
@@ -379,7 +328,7 @@ def seller_update(request,id):
             return render(request,'SellerSignup.html',context)
     return render(request,'SellerSignup.html',context)
 
-# ======================================================================================================================
+# ==========================================Seller-List=================================================================
 def seller_itemform(request,id):
     context = {}
     seller = Seller.objects.get(id=id)
@@ -416,6 +365,80 @@ def seller_messages(request,id):
     context['messages'] = messages
     return render(request, 'SellerMessages.html', context)
 
-# =======================================================================================================================
+# ====================================User-SignIn-SignUp-Update=========================================================
+
+def user_signup(request):
+    context = {}
+    context['form'] = UserForm()
+    context['data'] = ''
+    if request.method == 'POST':
+        if not  validate_mobile_number(request.POST.get("phoneNumber")) and not validate_password(request.POST.get("password")):
+            context['data'] = "Please enter a 10-digit mobile number and Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
+            return render(request,'UserSignup.html',context)
+        elif not validate_password(request.POST.get("password")):
+            context['data'] = "Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
+            return render(request,'UserSignup.html',context)
+        elif not  validate_mobile_number(request.POST.get("phoneNumber")):
+            context['data'] = "Please enter a 10 digit mobile number"
+            return render(request,'UserSignup.html',context)
+        form = UserForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            context['data']=f"{request.POST.get('name')} registered succefully"
+            return render(request,'UserSignup.html',context)
+        else:
+            context['data'] = "Something wrong in given data"
+            return render(request,'UserSignup.html',context)
+    return render(request,'UserSignup.html',context)
+
+def user_signin(request):
+    context = {}
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        try:
+            user = User.objects.get(email=email)
+            if password == user.password:
+                return redirect('/user_dashboard/{0}'.format(user.id))
+            else:
+                context["comment"] = "Incorrect password."
+        except User.DoesNotExist:
+            context["comment"] = "User not found."
+    return render(request, 'UserSignin.html', context)
+
+def user_update(request,id):
+    context = {}
+    user = User.objects.get(id=id)
+    context['form'] = UserForm(request.POST or None, instance=user)
+    context['data'] = ''
+    context['btval'] = 'Update'
+    if request.method == 'POST':
+        if not  validate_mobile_number(request.POST.get("phoneNumber")) and not validate_password(request.POST.get("password")):
+            context['data'] = "Please enter a 10-digit mobile number and Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
+            return render(request,'UserSignup.html',context)
+        elif not validate_password(request.POST.get("password")):
+            context['data'] = "Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
+            return render(request,'UserSignup.html',context)
+        elif not  validate_mobile_number(request.POST.get("phoneNumber")):
+            context['data'] = "Please enter a 10 digit mobile number"
+            return render(request,'UserSignup.html',context)
+        form = SellerForm(request.POST,request.FILES,instance=user)
+        if form.is_valid():
+            form.save()
+            context['data']= "details updated successfully"
+            return redirect('/user_dashboard/{0}'.format(user.id))
+        else:
+            context['data'] = "Something wrong in given data"
+            return render(request,'UserSignup.html',context)
+    return render(request,'UserSignup.html',context)
+
+# ==============================================User-List===============================================================
+
+def user_dashboard(request,id):
+    context = {}
+    user = User.objects.get(id=id)
+    context['user'] = user
+    return render(request, 'UserDashboard.html', context)
+
 
     
