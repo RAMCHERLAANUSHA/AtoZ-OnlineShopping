@@ -358,11 +358,20 @@ def seller_products(request,id):
 
 def seller_messages(request,id):
     context = {}
-    context['form'] = MessageForm
     seller = Seller.objects.get(id=id)
     messages = ItemAccess.objects.all()
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.seller = seller
+            item.save() 
+            context['comment']='Message Sent Successfully'
+        else:
+            context['comment']='Something went Wrong'
     context['seller'] = seller
     context['messages'] = messages
+    context['form'] = MessageForm
     return render(request, 'SellerMessages.html', context)
 
 # ====================================User-SignIn-SignUp-Update=========================================================

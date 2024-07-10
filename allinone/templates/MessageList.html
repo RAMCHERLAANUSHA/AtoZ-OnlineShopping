@@ -9,6 +9,9 @@
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        body{
+            overflow-x: hidden !important;
+        }
         .wpic{
             width: 40px;
             height: 40px;
@@ -44,6 +47,11 @@
         .btmdiv{
             background-color: #cfaa08;
         }
+        .table{
+            margin: 5%;
+            width: 90%;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -74,6 +82,22 @@
             </div>
         </div>
     </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Seller-ID</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+                <tr>
+                    <td>{{ message.seller_id }}</td>
+                    <td>{{ message.message }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 
 </html>
