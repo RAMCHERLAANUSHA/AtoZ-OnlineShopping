@@ -209,10 +209,10 @@ def adminLogin(request):
 # =================================================Admin-List==========================================================
 
 def admin_list(request):
-    items = Item.objects.exclude(itemaccess__isnull=False)  # Exclude items in ItemAccess
+    items = Item.objects.exclude(itemaccess__isnull=False)
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
-        action = request.POST.get('action')  # Fetch action parameter
+        action = request.POST.get('action')
         
         try:
             item = Item.objects.get(id=item_id)
@@ -363,6 +363,13 @@ def seller_products(request,id):
     context['seller'] = seller
     context['items'] = items
     return render(request, 'SellerProducts.html', context)
+
+def seller_product_delete(request, item_id):
+    item = Item.objects.get(id=item_id)
+    seller_id = item.seller.id
+    item.delete()
+    return redirect('/seller_products/' + str(seller_id))
+
 
 def seller_messages(request,id):
     context = {}
