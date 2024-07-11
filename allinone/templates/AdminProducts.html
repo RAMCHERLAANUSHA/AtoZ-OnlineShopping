@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,56 +8,107 @@
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body{
+        body {
             overflow-x: hidden !important;
+            background-color: whitesmoke;
         }
-        .wpic{
+        .wpic {
             width: 40px;
             height: 40px;
         }
-        .logout{
+        .logout {
             width: 80px;
             height: 30px;
             background-color: black;
             color: white;
             box-shadow: 2px 2px 2px #cfaa08,
-                2px 2px 2px #cfaa08;
+                        2px 2px 2px #cfaa08;
         }
-        #logbtn{
+        #logbtn {
             margin-top: -8px;
             color: white;
         }
-        .upperbtn{
+        .upperbtn {
             background-color: #cfaa08;
             color: black;
             border: none;
             font-weight: 700;
             padding-bottom: 8px;
         }
-        .upperbtn:hover{
+        .upperbtn:hover {
             background-image: linear-gradient(transparent calc(100% - 2px), black 5px);
         }
-        .btmnav{
+        .btmnav {
             padding-top: 5%;
         }
-        .productbtn{
+        .productbtn {
             padding-left: 160px;
         }
-        .btmdiv{
+        .btmdiv {
             background-color: #cfaa08;
+        }
+        h5 {
+            color: black;
+            text-decoration: none;
+            text-align: center;
+        }
+        .type {
+            color: black;
+            text-decoration: none;
+            text-align: center;
+        }
+        .card-img-top {
+            width: 100%;
+        }
+        .mvbtn {
+            border: none;
+            background-color: white;
+            color: black;
+        }
+        .outer {
+            background-color: whitesmoke;
+        }
+        .inner {
+            border: none;
+        }
+        .post {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            border: 1px solid black;
+            width: calc(100% - 20px);
+            margin-left: 10px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .postbtn {
+            background-color: black;
+            border: none;
+            color: white;
+            border-radius: 16px;
+            padding: 8px 16px;
+            margin-top: 10px;
+        }
+        .cost{
+            color: green;
+            text-align: center;
+            font-weight: 600;
         }
     </style>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg d-flex flex-row bg-black fixed-top">
         <div class="container-fluid justify-content-start">
             {% load static %}
-            <img src="{% static 'images/atoz.png' %}" class="wpic"></p>
+            <img src="{% static 'images/atoz.png' %}" class="wpic">
         </div>
         <ul class="navbar-nav collapse navbar-collapse" id="navbarText">
             <li class="nav-item mx-2">
-                <button  class="logout"><a class="nav-link active" id="logbtn" href="/signup/">Logout</a></button>
+                <button class="logout"><a class="nav-link active" id="logbtn" href="/signup/">Logout</a></button>
             </li>
         </ul>
     </nav>
@@ -77,6 +127,59 @@
             </div>
         </div>
     </div>
+    <div class="card outer">
+        <div class="card-body mt-3">
+            <div class="row">
+                {% for item in items %}
+                    <div class="col-3 mb-4 mx-4 post" id="item_{{ item.id }}">
+                        <div class="card inner">
+                            <img src="{{ item.photo.url }}" class="card-img-top pic" alt="...">
+                            <div class="card-body">
+                                <h5 class="mt-1">{{ item.name }}</h5>
+                                <p class="type">{{ item.description }}</p>
+                                <p class="cost">{{ item.cost }}</p>
+                                <form onsubmit="return false;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                                    <div class="row">
+                                        <div class="col mx-4">
+                                            <button type="button" onclick="handleFormSubmit('{{ item.id }}', 'access')" class="btn btn-success">Grant</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" onclick="handleFormSubmit('{{ item.id }}', 'deny')" class="btn btn-danger">Deny</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // Function to handle form submission via AJAX
+        function handleFormSubmit(item_id, action) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'admin_list' %}",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    item_id: item_id,
+                    action: action
+                },
+                success: function(response) {
+                    alert(response.message);  // Show success message
+                    // Remove the item from the view if successful (optional)
+                    $('#item_' + item_id).remove();  // Assuming each item has a unique ID
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ": " + xhr.responseText);  // Log any errors
+                    alert("Failed to process action. Please try again.");  // Show error message
+                }
+            });
+        }
+    </script>
 </body>
-
 </html>

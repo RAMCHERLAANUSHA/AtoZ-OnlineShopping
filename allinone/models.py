@@ -84,4 +84,4 @@ class OTP(models.Model):
 class ItemAccess(models.Model):  
     item_id = models.OneToOneField(Item,on_delete=models.CASCADE)
     access = models.BooleanField()
-    comment = models.TextField(default='Item denied')
+    comment = models.CharField(max_length=100,default='Item denied')

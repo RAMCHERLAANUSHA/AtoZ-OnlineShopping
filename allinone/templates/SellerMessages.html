@@ -60,6 +60,7 @@
             height: 40%;
             margin-left: -15%;
             animation: move-shadow 1s ease-in-out infinite;
+            margin-top: 150px !important;
         }
         h3 {
             text-align: center;
@@ -206,13 +207,13 @@
         <div class="btmnav">
             <div class="row">
                 <div class="col-4 productbtn">
-                    <a href="{% url 'seller_itemform' seller.id %}"><button class="upperbtn">Add Products</button></a>
+                    <a href="/seller_itemform/{{seller.id}}/"><button class="upperbtn">Add Products</button></a>
                 </div>
                 <div class="col-4 productbtn">
-                    <a href="{% url 'seller_products' seller.id %}"><button class="upperbtn">Products</button></a>
+                    <a href="/seller_products/{{seller.id}}/"><button class="upperbtn">Products</button></a>
                 </div>
                 <div class="col-4 productbtn">
-                    <a href="{% url 'seller_messages' seller.id %}"><button class="upperbtn">Messages</button></a>
+                    <a href="/seller_messages/{{seller.id}}/"><button class="upperbtn">Messages</button></a>    
                 </div>
             </div>
         </div>
@@ -232,7 +233,6 @@
                         </form>
                     </div>
                     <p class="error-message">{{comment}}</p>
-
                 </div>
             </div>
         </div>
@@ -244,9 +244,24 @@
                 </div>
             </div>
         </div>
-        <div>
-            {{messages.message}}
-        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                    <tr>
+                        <td>{{ message.item_id_id }}</td>
+                        <td>{{ message.item_id.name}}</td>
+                        <td>{{ message.comment }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <script>
         function UpdateProfile(){

@@ -95,7 +95,7 @@ class PasswordResetForm(forms.Form):
 class ItemAccessForm(forms.ModelForm):
     class Meta:
         model = ItemAccess
-        fields = ['access', 'comment']
+        fields = ['comment']
 
 
 

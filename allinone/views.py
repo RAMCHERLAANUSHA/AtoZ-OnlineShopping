@@ -6,6 +6,8 @@ from django.core.mail import send_mail
 from .models import *
 from .forms import *
 from django.contrib.auth.hashers import make_password
+from django.http import JsonResponse
+
 
 # =================================================HomeView=============================================================
 
@@ -207,31 +209,38 @@ def adminLogin(request):
 # =================================================Admin-List==========================================================
 
 def admin_list(request):
-    items = Item.objects.all()
-
+    items = Item.objects.exclude(itemaccess__isnull=False)  # Exclude items in ItemAccess
     if request.method == 'POST':
-        item_id = request.POST.get('Id')
+        item_id = request.POST.get('item_id')
+        action = request.POST.get('action')  # Fetch action parameter
+        
         try:
             item = Item.objects.get(id=item_id)
         except Item.DoesNotExist:
             item = None
-
-        if item:
-            if 'access' in request.POST:
+        
+        if item and action:
+            if action == 'access':
                 access_status = True
                 comment = 'Access granted'
-            elif 'deny' in request.POST:
+            elif action == 'deny':
                 access_status = False
                 comment = 'Access denied'
-
-            ItemAccess.objects.update_or_create(
-                item=item,
+            
+            # Create or update ItemAccess record
+            item_access, created = ItemAccess.objects.update_or_create(
+                item_id=item,
                 defaults={'access': access_status, 'comment': comment}
             )
-
-        return redirect('admin_list')
+            
+            # Remove item from the queryset if action was taken
+            items = items.exclude(id=item.id)
+            
+            return JsonResponse({'message': f'Item {action}ed successfully.'}, status=200)
+        
     context = {
         'items': items,
+        'form': ItemAccessForm(),
     }
     return render(request, 'AdminProducts.html', context)
 
@@ -329,6 +338,7 @@ def seller_update(request,id):
     return render(request,'SellerSignup.html',context)
 
 # ==========================================Seller-List=================================================================
+
 def seller_itemform(request,id):
     context = {}
     seller = Seller.objects.get(id=id)
@@ -339,8 +349,10 @@ def seller_itemform(request,id):
            item.seller = seller
            item.save()  
            context['comment'] = 'Item added successfully.'
+        #    return redirect('seller_itemform', id=id)
         else:
             context['comment'] = 'Something went wrong.'
+            # return redirect('seller_itemform', id=id)
     else:
         form = ItemForm()
 
