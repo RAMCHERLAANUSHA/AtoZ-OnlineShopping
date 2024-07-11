@@ -146,13 +146,13 @@
         <div class="btmnav">
             <div class="row">
                 <div class="col-4 productbtn">
-                    <a href="{% url 'admin_list' %}"><button class="upperbtn">Products</button></a>
+                    <a href="/admin_list/"><button class="upperbtn">Products</button></a>
                 </div>
                 <div class="col-4 productbtn">
-                    <a href="{% url 'add_category' %}"><button class="upperbtn">Categories</button></a>
+                    <a href="/add_category/"><button class="upperbtn">Categories</button></a>
                 </div>
                 <div class="col-4 productbtn">
-                    <a href="{% url 'message_list' %}"><button class="upperbtn">Messages</button></a>
+                    <a href="/message_list/"><button class="upperbtn">Messages</button></a>
                 </div>
             </div>
         </div>
@@ -199,7 +199,7 @@
                     <td>{{ category.id }}</td>
                     <td>{{ category.category }}</td>
                     <td>
-                        <a href="{% url 'delete_category' category_id=category.id  %}" onclick="deletebtn()">
+                        <a href="/delete_category/{{category.id}}" onclick="deletebtn()">
                             <i class="fa fa-trash"></i>
                         </a>
                     </td>

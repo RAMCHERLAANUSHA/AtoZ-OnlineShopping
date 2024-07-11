@@ -226,14 +226,10 @@ def admin_list(request):
             elif action == 'deny':
                 access_status = False
                 comment = 'Access denied'
-            
-            # Create or update ItemAccess record
             item_access, created = ItemAccess.objects.update_or_create(
                 item_id=item,
                 defaults={'access': access_status, 'comment': comment}
             )
-            
-            # Remove item from the queryset if action was taken
             items = items.exclude(id=item.id)
             
             return JsonResponse({'message': f'Item {action}ed successfully.'}, status=200)

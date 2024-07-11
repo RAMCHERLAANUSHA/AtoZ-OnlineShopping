@@ -31,9 +31,9 @@ urlpatterns = [
 
     path('adminlogin/',views.adminLogin, name='adminLogin'),
 
-    path('adminList/', views.admin_list, name = 'admin_list'),
+    path('admin_list/', views.admin_list, name = 'admin_list'),
     path('add_category/', views.add_category, name='add_category'),
-    path('messages/', views.message_list, name='message_list'),
+    path('message_list/', views.message_list, name='message_list'),
     path('delete_category/<int:category_id>/',views.category_delete, name='delete_category'),
 
     path('seller_signup/',views.seller_signup, name='seller_signup'),
