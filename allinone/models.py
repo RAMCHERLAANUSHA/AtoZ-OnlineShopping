@@ -8,6 +8,7 @@ from datetime import timedelta
 
 class AdminCategory(models.Model):
     category = models.CharField(max_length=50, unique=True)
+    image = models.ImageField(upload_to='images/',default='images/p1.jpg')
 
 class Seller(models.Model):
     name = models.CharField(max_length=60)
@@ -31,7 +32,7 @@ class User(models.Model):
 
 class Item(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=300)
+    description = models.CharField(max_length=120)
     photo = models.ImageField(upload_to='images/')
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(AdminCategory, on_delete=models.CASCADE)
@@ -47,7 +48,7 @@ class Review(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
-    comment = models.TextField()
+    comment = models.CharField(max_length=50)
 
 class Message(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)

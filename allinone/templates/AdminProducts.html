@@ -67,9 +67,14 @@
         }
         .outer {
             background-color: whitesmoke;
+            padding-left: 70px;
         }
         .inner {
             border: none;
+            width: 180px;
+            height: 310px;
+            text-align: center;
+            align-items: center;
         }
         .post {
             background-color: white;
@@ -77,6 +82,9 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            height: 600px;
+            width: 240px;
+            align-items: center;
         }
         input[type="text"] {
             border: 1px solid black;
@@ -84,6 +92,10 @@
             margin-left: 10px;
             padding: 8px;
             border-radius: 4px;
+        }
+        .pic{
+            border: none;
+            align-items: center;
         }
         .postbtn {
             background-color: black;
@@ -102,7 +114,12 @@
             font-weight: 500;
             color: rgb(239, 99, 99);
         }
-
+        .imgphoto{
+            height: 200px;
+            width: 150px;
+            margin-top: 0px;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -138,26 +155,27 @@
                 <div class="row">
                     {% for item in items %}
                         <div class="col-3 mb-4 mx-4 post" id="item_{{ item.id }}">
-                            <div class="card inner">
-                                <img src="{{ item.photo.url }}" class="card-img-top pic" alt="...">
-                                <div class="card-body">
-                                    <h5 class="mt-1">{{ item.name }}</h5>
-                                    <p class="type">{{ item.description }}</p>
-                                    <p class="cost">{{ item.cost }}</p>
-                                    <form onsubmit="return false;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="item_id" value="{{ item.id }}">
-                                        <div class="row">
-                                            <div class="col mx-4">
-                                                <button type="button" onclick="handleFormSubmit('{{ item.id }}', 'access')" class="btn btn-success">Grant</button>
-                                            </div>
-                                            <div class="col">
-                                                <button type="button" onclick="handleFormSubmit('{{ item.id }}', 'deny')" class="btn btn-danger">Deny</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                            <div class="card pic">
+                                <img src="{{ item.photo.url }}" class="imgphoto" alt="...">
                             </div>
+                            <div class="card inner">
+                                <h5 class="mt-1">{{ item.name }}</h5>
+                                <p class="type">{{ item.description }}</p>
+                                <p class="cost">{{ item.cost }}</p>
+                                <p class="type">Category: {{item.category.category}}</p>
+                            </div>
+                            <form onsubmit="return false;">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                <div class="row">
+                                    <div class="col mx-4">
+                                        <button type="button" onclick="handleFormSubmit('{{ item.id }}', 'access')" class="btn btn-success">Grant</button>
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" onclick="handleFormSubmit('{{ item.id }}', 'deny')" class="btn btn-danger">Deny</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     {% endfor %}
                 </div>

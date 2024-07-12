@@ -202,6 +202,8 @@
         }
         .inner {
             border: none;
+            width: 180px;
+            height: 320px;
         }
         .post {
             background-color: white;
@@ -209,6 +211,8 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            height: 650px;
+            width: 200px;
         }
         input[type="text"] {
             border: 1px solid black;
@@ -240,8 +244,14 @@
             text-decoration: none;
             color: black;
         }
-        .prod{
-            margin-left: 15% !important;
+        .imgphoto{
+            height: 200px;
+            width: 150px;
+            margin-top: -60px;
+            border: none;
+        }
+        .pic{
+            border: none;
         }
     </style>
 </head>
@@ -294,11 +304,11 @@
     </div>
     <div class="card outer">
         <div class="card-body pt-3">
-            <div class="row mx-5 prod">
+            <div class="row prod">
                 {% for item in items %}
                     <div class="col-3 pb-4 mx-3 post" id="item_{{ item.id }}">
-                        <div class="card inner">
-                            <img src="{{ item.photo.url }}" class="card-img-top pic" alt="...">
+                        <div class="card pic">
+                            <img src="{{ item.photo.url }}" class="imgphoto" alt="...">
                         </div>
                         <div class="card inner">
                             <h5 class="mt-1">{{ item.name }}</h5>

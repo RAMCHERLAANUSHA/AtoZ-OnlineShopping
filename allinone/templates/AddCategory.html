@@ -127,6 +127,10 @@
             background-color: white;
             color: black;
         }
+        .catimage{
+            width: 30px;
+            height: 30px;
+        }
     </style>
 </head>
 
@@ -163,7 +167,7 @@
                 <div class="card align-items-center iside">
                     <div class="card-body">
                         <h3 class="mx-3">Add Category</h3>
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.as_p }}
                             <div class="sign">
@@ -190,6 +194,7 @@
             <tr>
                 <th>ID</th>
                 <th>Categories</th>
+                <th>Image</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -198,6 +203,7 @@
                 <tr>
                     <td>{{ category.id }}</td>
                     <td>{{ category.category }}</td>
+                    <td><img src="{{ category.image.url }}" class="catimage" alt="..."></td>
                     <td>
                         <a href="/delete_category/{{category.id}}" onclick="deletebtn()">
                             <i class="fa fa-trash"></i>

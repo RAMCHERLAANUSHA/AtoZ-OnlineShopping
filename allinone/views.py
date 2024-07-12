@@ -243,7 +243,7 @@ def admin_list(request):
 def add_category(request):
     context = {}
     if request.method == 'POST':
-        form = AdminCategoryForm(request.POST)
+        form = AdminCategoryForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             context['comment'] = 'Category added successfully.'
@@ -370,7 +370,6 @@ def seller_product_delete(request, item_id):
     item.delete()
     return redirect('/seller_products/' + str(seller_id))
 
-
 def seller_messages(request,id):
     context = {}
     seller = Seller.objects.get(id=id)
@@ -458,10 +457,14 @@ def user_update(request,id):
 
 # ==============================================User-List===============================================================
 
-def user_dashboard(request,id):
+def user_dashboard(request, id):
     context = {}
     user = User.objects.get(id=id)
+    accessed_items = Item.objects.filter(itemaccess__access=True)
+    categories = AdminCategory.objects.all()
+    context['categories'] = categories
     context['user'] = user
+    context['items'] = accessed_items
     return render(request, 'UserDashboard.html', context)
 
 
