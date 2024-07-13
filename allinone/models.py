@@ -38,17 +38,17 @@ class Item(models.Model):
     category = models.ForeignKey(AdminCategory, on_delete=models.CASCADE)
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
 
-    def average_rating(self):
-        reviews = self.review_set.all()
-        if reviews:
-            return sum(review.rating for review in reviews) / reviews.count()
-        return 0
 
 class Review(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
-    comment = models.CharField(max_length=50)
+
+    def average_rating(self):
+        reviews = self.review_set.all()
+        if reviews:
+            return sum(review.rating for review in reviews) / reviews.count()
+        return 0
 
 class Message(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)

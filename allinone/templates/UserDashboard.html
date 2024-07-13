@@ -262,13 +262,11 @@
             border: none;
         }
         .main{
-            background-color: white;
-            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
             height: 650px;
             width: 200px;
+            text-decoration: none !important;
         }
         .cost{
             color: green;
@@ -277,9 +275,59 @@
         }
         .des{
             text-align: center;
+            height: 300px;
+            width: 180px;
         }
         h5{
             text-align: center;
+        }
+        .dropdown-menu{
+            border: 2px solid black;
+        }
+        .fa-solid.fa-heart{
+            color: red;
+            font-size: 25px ;
+            margin-top: 5px;
+        }
+        .itembtn{
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 650px;
+            width: 200px;
+        }
+        .upperbtn{
+            background-color: #cfaa08;
+            color: black;
+            border: none;
+            font-weight: 700;
+            padding-bottom: 8px;
+        }
+        .upperbtn:hover{
+            background-image: linear-gradient(transparent calc(100% - 2px), black 5px);
+        }
+        .btmnav{
+            padding-top: 5%;
+        }
+        .productbtn{
+            padding-left: 250px;
+        }
+        .btmdiv{
+            background-color: #cfaa08;
+        }
+        .fa-solid.fa-cart-shopping{
+            font-size: 25px;
+            margin-top: 5px;
+        }
+        .orders{
+            height: 30px;
+            width: 70px;
+            padding-top: 5px;
+            background-color: #cfaa08;
+        }
+        .address{
+            color: white;
+            margin-top: 6px;
         }
     </style>
 </head>
@@ -289,6 +337,16 @@
         <div class="container-fluid justify-content-start">
             {% load static %}
             <img src="{% static 'images/atoz.png' %}" class="wpic" alt="Logo">
+            <p class="mx-5 address"><i class="fa-solid fa-location-dot"></i><span class="address"> Delivering to <span>{{user.address}}</span></span></p>
+        </div>
+        <div class="mx-5">
+            <button class="orders"><a class="nav-link active" id="logbtn" href="" onclick="">Orders</a></button>
+        </div>
+        <div class="mx-5">
+            <a class="nav-link active" id="logbtn" href="" onclick=""><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+        <div class="mx-5">
+            <a class="nav-link active" id="logbtn" href="" onclick="wishlist()"><i class="fa-solid fa-heart"></i></a>
         </div>
         <ul class="navbar-nav collapse navbar-collapse" id="navbarText">
             <li class="nav-item m-1 position-relative">
@@ -338,16 +396,18 @@
             <div class="row">
                 {% for item in items %}
                     <div class="col-3 pb-4 mx-2 main" id="item_{{ item.id }}">
-                        <div class="card pc">
-                            <img src="{{ item.photo.url }}" class="imgphoto" alt="...">
-                        </div>
-                        <div class="card in">
-                            <h5 class="mt-1">{{ item.name }}</h5>
-                            <p class="des">{{ item.description }}</p>
-                            <p class="cost">{{ item.cost }}</p>
+                        <button class="itembtn" onclick="location.href='/user_item/{{user.id}}/{{item.id}}'">
+                            <div class="card pc">
+                                <img src="{{ item.photo.url }}" class="imgphoto" alt="...">
+                            </div>
+                            <div class="card in">
+                                <h5 class="mt-1">{{ item.name }}</h5>
+                                <p class="des">{{ item.description }}</p>
+                                <p class="cost"><i class="fa-solid fa-indian-rupee-sign"></i>{{ item.cost }}</p>
 
-                            <p class="des">Free Delivery By A to Z</p>
-                        </div>
+                                <p class="des">Free Delivery By A to Z</p>
+                            </div>
+                        </button>
                     </div>
                 {% endfor %}
             </div>
@@ -362,6 +422,9 @@
             window.location.href = "/user_signin/"
         }
         function catbtn(){
+
+        }      
+        function wishlist(){
 
         }
     </script>

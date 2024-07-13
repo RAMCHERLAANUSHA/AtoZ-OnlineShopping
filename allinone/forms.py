@@ -55,21 +55,14 @@ class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = ['message']
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['seller'].queryset = Seller.objects.all()
-    #     self.fields['seller'].label_from_instance = lambda obj: f"{obj.name}"
 
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = "__all__"
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['item'].queryset = Item.objects.all()
-        self.fields['item'].label_from_instance = lambda obj: f"{obj.item}"
-        self.fields['user'].queryset = User.objects.all()
-        self.fields['user'].label_from_instance = lambda obj: f"{obj.user}"
+        fields = ['quantity'] 
+        widgets = {
+            'quantity': forms.Select(choices=[(i, str(i)) for i in range(1, 11)])
+        }
 
 class WishlistForm(forms.ModelForm):
     class Meta:

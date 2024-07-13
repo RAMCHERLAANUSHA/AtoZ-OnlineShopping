@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @keyframes move-shadow {
+            0% {
+                box-shadow: 2px 2px 4px #cfaa08, 2px 2px 4px rgba(180, 180, 3, 0.16);
+                ;
+            }
+
+            25% {
+                box-shadow: -2px 2px 4px #cfaa08, -2px 2px 4px rgba(180, 180, 3, 0.16);
+                ;
+            }
+
+            50% {
+                box-shadow: -2px -2px 4px #cfaa08, -2px -2px 4px rgba(180, 180, 3, 0.16);
+                ;
+            }
+
+            75% {
+                box-shadow: 2px -2px 4px #cfaa08, 2px -2px 4px rgba(180, 180, 3, 0.16);
+                ;
+            }
+
+            100% {
+                box-shadow: 2px 2px 4px #cfaa08, 2px 2px 4px rgba(180, 180, 3, 0.16);
+                ;
+            }
+        }
+        body{
+            overflow: hidden !important;
+            background-color: white;
+        }
+        .wpic{
+            width: 40px;
+            height: 40px;
+        }
+        .imgpic{
+            margin-left: 30px;
+        }
+        .table{
+            width: 80%;
+            margin-left: 10%;
+        }
+        .fa{
+            background-color: red;
+            padding: 5px;
+            color: white;
+            border-radius: 3px;
+        }
+        #userImage{
+            width: 35px;
+            height: 35px;
+            margin-top: 0px;
+            margin-right: 20px;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+        #dropimage{
+            height: 100px !important;
+            width: 120px !important;
+            border-radius: 50%;
+            margin-left: 30px;
+        }
+        .dropdown-menu{
+            text-align: center !important;
+            padding: 30px !important;
+        }
+        .link:hover{
+            background-color: #cfaa08;
+        }
+        .dropdown-menu{
+            border: 2px solid black;
+        }
+        .fa-solid.fa-heart{
+            color: red;
+            font-size: 25px ;
+            margin-top: 5px;
+        }
+        .item-image{
+            width: 90%;
+            height: 90%;
+            margin-top: 20px;
+        }
+        .card{
+            border: none;
+            margin-top: 60px;
+        }
+        .text{
+            justify-content: left;
+            align-items: left;
+            text-align: left;
+            padding-top: 60px;
+            background-color: whitesmoke;
+            margin-top: -16px;
+        }
+        h5{
+            font-size: 30px;
+            font-weight: bolder;
+        }
+        .cost{
+            color: green;
+            font-weight: bolder;
+            font-size: 35px;
+        }
+        .limited{
+            color: white;
+            background-color: rgb(242, 42, 75);
+        }
+        .mrp{
+            text-decoration: line-through;
+        }
+        .icn{
+            font-size: 25px;
+        }
+        .icntext{
+            font-size: 13px;
+            color: rgb(10, 174, 244);
+        }
+        .order{
+            border: 1px solid black;
+            padding-left: 10px;
+            width: 280px;
+        }
+        .delivery{
+            padding-top: 5px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .free{
+            color: rgb(10, 174, 244);
+            padding-right: 4px;
+        }
+        .tmrw{
+            margin-left: 6px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        #remainingTime{
+            color: green;
+            font-weight: 500;
+            margin-left: 6px;
+        }
+        .address{
+            color: rgb(10, 174, 244);
+            margin-left: 8px;
+        }
+        h6{
+            color: green;
+            font-size: 20px;
+        }
+        label{
+            font-weight: 500;
+        }
+        .orderbtn{
+            width: 95%;
+            border-radius: 16px;
+            background-color: #cfaa08;
+        }
+        .sold{
+            margin-top: -10px;
+        }
+        .cartbtn{
+            width: 95%;
+            border-radius: 16px;
+            background-color: #ef4208;
+        }
+        .secure{
+            padding-top: 6px;
+            font-size: 15px;
+        }
+        .discount{
+            color: red;
+        }
+        .fa-solid.fa-cart-shopping{
+            font-size: 25px;
+            margin-top: 5px;
+            color: white;
+        }
+        .orders{
+            height: 30px;
+            width: 70px;
+            /* padding-top: 5px; */
+            background-color: #cfaa08;
+        }
+        .address{
+            color: white;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg d-flex flex-row bg-black fixed-top">
+        <div class="container-fluid justify-content-start">
+            {% load static %}
+            <img src="{% static 'images/atoz.png' %}" class="wpic" alt="Logo">
+        <p class="mx-5 address"><i class="fa-solid fa-location-dot"></i><span class="address"> Delivering to <span>{{user.address}}</span></span></p>
+        </div>
+        <div class="mx-5">
+            <button class="orders"><a class="nav-link active" id="logbtn" href="" onclick="">Orders</a></button>
+        </div>
+        <div class="mx-5">
+            <a class="nav-link active" id="logbtn" href="" onclick=""><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+        <div class="mx-5">
+            <a class="nav-link active" id="logbtn" href="" onclick="wishlist()"><i class="fa-solid fa-heart"></i></a>
+        </div>
+        <ul class="navbar-nav collapse navbar-collapse" id="navbarText">
+            <li class="nav-item m-1 position-relative">
+                <button class="btn p-0" type="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img id="userImage" src="{{ user.image.url }}" alt="User Image">
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <img id="dropimage" class="dropdown-item" src="{{ user.image.url }}" alt="User Image">
+                    </li>
+                    <li>
+                        <span class="dropdown-item">Hi, {{user.name}}</span>
+                    </li>
+                    <li>
+                        <span class="dropdown-item">{{user.email}}</span>
+                    </li><hr>
+                    <li>
+                        <a class="dropdown-item link" href="#" onclick="UpdateProfile()">Update Profile</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item link" href="#" onclick="logout()">Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    <img src="{{ item.photo.url }}" class="item-image" alt="...">
+                </div>
+                <div class="col-4 text">
+                    <h5 class="mt-1">{{ item.name }}-{{ item.description }}</h5><hr>
+                    <button class="limited">Limited Time Deal</button>
+                    <p class="cost"><i class="fa-solid fa-indian-rupee-sign"></i>{{ item.cost }}</p>
+                    <p><span class="discount">-50% </span>M.R.P.: <span  class="mrp">{{ item.cost|add:item.cost }}</span></p>  
+                    <p class="des">Inclusive of all taxes</p><hr>
+                    <div class="row">
+                        <div class="col-3">
+                            <i class="fa-solid fa-arrows-rotate icn"></i>
+                            <p class="icntext">10 days Return & Exchange</p>
+                        </div>
+                        <div class="col-3">
+                            <i class="fa-brands fa-amazon-pay icn"></i>
+                            <p class="icntext">Pay on Delivery</p>
+                        </div>
+                        <div class="col-3">
+                            <i class="fa-solid fa-truck icn"></i>
+                            <p class="icntext">Free Delivery</p>
+                        </div>
+                        <div class="col-3">
+                            <i class="fa-solid fa-lock icn"></i>
+                            <p class="icntext">Secure transaction</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1">
+                </div>
+                <div class="col-2 order">
+                    <h4 class="pt-3"><i class="fa-solid fa-indian-rupee-sign"></i>{{item.cost}}</h4>
+                    <p class="delivery"><span class="free">FREE Delivery</span><span id="newDate"> </span></p><hr>
+                    <p><span>Or fastest delivery</span><span class="tmrw">Tommorow, <span id ='tmrwDate'></span></span><span>Order with in <span id="remainingTime"></span></span></p><hr>
+                    <p><i class="fa-solid fa-location-dot"></i><span class="address">Delivering to <span>{{user.address}}</span></span></p>
+                    <h6 class="stock">In Stock</h6>
+                    <div class="row">
+                        <div class="col-6">
+                            <p>Ships from</p>
+                        </div>
+                        <div class="col-6">
+                            <p>A to Z</p>
+                        </div>
+                    </div>
+                    <div class="row sold">
+                        <div class="col-6">
+                            <p>Sold by</p>
+                        </div>
+                        <div class="col-6">
+                            <p>{{item.seller.name}}</p>
+                        </div>
+                    </div><hr>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" onclick="buy()" class="orderbtn">Buy Now</button>
+                    </form>
+                    <button class="cartbtn mt-2">Add to Cart</button>
+                    <p class="secure"><i class="fa-solid fa-lock mx-3"></i>Secure transaction</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function UpdateProfile(){
+            window.location.href = "/user_update/{{user.id}}"
+        }
+        function logout(){
+            window.location.href = "/user_signin/"
+        }
+        function buy(){
+            alert("Ordered Successfully");
+        }
+    </script>
+       <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            let today = new Date();
+
+            let todayDayName = weekdays[today.getDay()];
+            let todayDayNumber = today.getDate();
+            let todayMonthName = months[today.getMonth()];
+
+            let newDate = new Date(today);
+            newDate.setDate(today.getDate() + 2);
+
+            let tmrwDate = new Date(today);
+            tmrwDate.setDate(today.getDate() + 1);
+
+            let newDayName = weekdays[newDate.getDay()];
+            let newDayNumber = newDate.getDate();
+            let newMonthName = months[newDate.getMonth()];
+
+            let tmrwMonthName = months[tmrwDate.getMonth()];
+            let tmrwDayNumber = tmrwDate.getDate();
+
+            let newDateFormatted = `${newDayName}, ${newDayNumber} ${newMonthName}`;
+            let tmrwDateFormatted = `${tmrwDayNumber} ${tmrwMonthName}.`;
+
+            document.getElementById("newDate").textContent = newDateFormatted;
+            document.getElementById("tmrwDate").textContent = tmrwDateFormatted;
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function updateRemainingTime() {
+                let now = new Date();
+                let midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+                let diff = midnight - now;
+
+                let hours = Math.floor(diff / (1000 * 60 * 60));
+                let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+                document.getElementById("remainingTime").textContent = `${hours} hr ${minutes} min.`;
+            }
+
+            updateRemainingTime();
+            setInterval(updateRemainingTime, 1000 * 60);
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+
+</html>

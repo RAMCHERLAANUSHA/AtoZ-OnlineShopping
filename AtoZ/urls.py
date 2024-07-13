@@ -50,6 +50,7 @@ urlpatterns = [
     path('user_update/<int:id>/',views.user_update, name='user_update'),
 
     path('user_dashboard/<int:id>/',views.user_dashboard, name='user_dashboard'),
+    path('user_item/<int:id>/<int:item_id>/',views.user_item, name='user_item'),
 
 
 ]

@@ -240,6 +240,9 @@
             border-radius: 16px;
             margin-left: 70%;
         }
+        .dropdown-menu{
+            border: 2px solid black;
+        }
         a{
             text-decoration: none;
             color: black;
@@ -313,7 +316,7 @@
                         <div class="card inner">
                             <h5 class="mt-1">{{ item.name }}</h5>
                             <p class="type">{{ item.description }}</p>
-                            <p class="cost">{{ item.cost }}</p>
+                            <p class="cost"><i class="fa-solid fa-indian-rupee-sign"></i>{{ item.cost }}</p>
                             <p class="type">Category: {{item.category.category}}</p>
                         </div>
                         <div class="delbtn-container">

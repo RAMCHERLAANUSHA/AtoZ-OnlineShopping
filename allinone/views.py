@@ -457,7 +457,7 @@ def user_update(request,id):
 
 # ==============================================User-List===============================================================
 
-def user_dashboard(request, id):
+def user_dashboard(request,id):
     context = {}
     user = User.objects.get(id=id)
     accessed_items = Item.objects.filter(itemaccess__access=True)
@@ -467,5 +467,20 @@ def user_dashboard(request, id):
     context['items'] = accessed_items
     return render(request, 'UserDashboard.html', context)
 
-
-    
+def user_item(request,id,item_id):
+    context={}
+    items = Item.objects.get(id=item_id)
+    user = User.objects.get(id=id)
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.item = items
+            order.user = user
+            order.save()
+    else:
+        form = OrderForm()   
+    context['item'] = items
+    context['user'] = user
+    context['form'] = form
+    return render(request, 'UserItem.html', context)
