@@ -388,6 +388,15 @@ def seller_messages(request,id):
     context['form'] = MessageForm
     return render(request, 'SellerMessages.html', context)
 
+def seller_orders(request, seller_id):
+    seller = Seller.objects.get(id=seller_id)
+    orders = Order.objects.filter(item__seller=seller)
+    context = {
+        'seller': seller,
+        'orders': orders,
+    }
+    return render(request, 'SellerOrders.html', context)
+
 # ====================================User-SignIn-SignUp-Update=========================================================
 
 def user_signup(request):

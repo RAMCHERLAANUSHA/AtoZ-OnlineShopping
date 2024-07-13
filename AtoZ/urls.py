@@ -44,6 +44,7 @@ urlpatterns = [
     path('seller_products/<int:id>/',views.seller_products, name='seller_products'),
     path('seller_products_delete/<int:item_id>/', views.seller_product_delete, name='seller_products_delete'),
     path('seller_messages/<int:id>/',views.seller_messages, name='seller_messages'),
+    path('seller_orders/<int:seller_id>/', views.seller_orders, name='seller_orders'),
 
     path('user_signup/',views.user_signup, name='user_signup'),
     path('user_signin/',views.user_signin, name='user_signin'),
