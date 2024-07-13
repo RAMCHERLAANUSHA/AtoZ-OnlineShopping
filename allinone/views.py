@@ -493,3 +493,29 @@ def user_item(request,id,item_id):
     context['user'] = user
     context['form'] = form
     return render(request, 'UserItem.html', context)
+
+def user_orders(request,id):
+    context = {}
+    user =  User.objects.get(id=id)
+    orders = Order.objects.filter(user=user)
+    context['user'] = user
+    context['orders'] = orders
+    return render(request, 'UserOrders.html', context)
+
+def delete_orders(request,order_id):
+    order = Order.objects.get(id=order_id)
+    user_id = order.user.id
+    order.delete()
+    return redirect('/user_orders/' + str(user_id))
+
+def category_wise_products(request, id, category_id):
+    context = {}
+    user = User.objects.get(id=id)
+    category = AdminCategory.objects.get(id=category_id)
+    accessed_items = Item.objects.filter(itemaccess__access=True, category=category)
+    categories = AdminCategory.objects.all()
+    context['user'] = user
+    context['category'] = category
+    context['items'] = accessed_items
+    context['categories'] = categories
+    return render(request, "CategoryWiseProducts.html", context)

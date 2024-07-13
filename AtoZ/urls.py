@@ -52,6 +52,9 @@ urlpatterns = [
 
     path('user_dashboard/<int:id>/',views.user_dashboard, name='user_dashboard'),
     path('user_item/<int:id>/<int:item_id>/',views.user_item, name='user_item'),
+    path('user_orders/<int:id>/',views.user_orders, name='user_orders'),
+    path('delete_orders/<int:order_id>/',views.delete_orders, name='delete_orders'),
+    path('category_wise_products/<int:id>/<int:category_id>/',views.category_wise_products, name='category_wise_products'),
 
 
 ]

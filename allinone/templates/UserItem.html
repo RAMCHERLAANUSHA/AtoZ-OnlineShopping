@@ -206,10 +206,10 @@
         <p class="mx-5 address"><i class="fa-solid fa-location-dot"></i><span class="address"> Delivering to <span>{{user.address}}</span></span></p>
         </div>
         <div class="mx-5">
-            <button class="orders"><a class="nav-link active" id="logbtn" href="" onclick="">Orders</a></button>
+            <button class="orders"><a class="nav-link active" id="logbtn" href="#" onclick="orders()">Orders</a></button>
         </div>
         <div class="mx-5">
-            <a class="nav-link active" id="logbtn" href="" onclick=""><i class="fa-solid fa-cart-shopping"></i></a>
+            <a class="nav-link active" id="logbtn" href="" onclick="cartbtn()"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
         <div class="mx-5">
             <a class="nav-link active" id="logbtn" href="" onclick="wishlist()"><i class="fa-solid fa-heart"></i></a>
@@ -315,6 +315,18 @@
         }
         function buy(){
             alert("Ordered Successfully");
+        }
+        function catbtn(){
+
+        }      
+        function wishlist(){
+
+        }
+        function orders(){
+             window.location.href = "/user_orders/{{user.id}}"
+        }
+        function cartbtn(){
+
         }
     </script>
        <script>
