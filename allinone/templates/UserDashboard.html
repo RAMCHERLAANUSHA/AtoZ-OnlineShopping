@@ -219,7 +219,7 @@
             text-align: center;
         }
         .outer{
-            margin-top: 0;
+            margin-top: 20px;
             background-color: whitesmoke;
             margin-left: 60px;
         }
@@ -329,15 +329,40 @@
             color: white;
             margin-top: 6px;
         }
+        .search{
+            background-color: white;
+        }
+        .fa-solid.fa-sliders{
+            color: white;
+        }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg d-flex flex-row bg-black fixed-top">
         <div class="container-fluid justify-content-start">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-sliders"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        {% for category in categories %}
+                        <li><a class="dropdown-item" href="#" onclick="location.href='/category_wise_products/{{user.id}}/{{category.id}}'">{{ category.category }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                </ul>
+            </div>
             {% load static %}
             <img src="{% static 'images/atoz.png' %}" class="wpic" alt="Logo">
             <p class="mx-5 address"><i class="fa-solid fa-location-dot"></i><span class="address"> Delivering to <span>{{user.address}}</span></span></p>
+            <form method="GET" action="{% url 'user_dashboard' user.id %}">
+                <input type="text" name="q" placeholder="Search..." class="search">
+                <button type="submit">Search</button>
+            </form>
         </div>
         <div class="mx-5">
             <button class="orders"><a class="nav-link active" id="logbtn" href="#" onclick="orders()">Orders</a></button>
@@ -373,6 +398,7 @@
             </li>
         </ul>
     </nav>
+    
     <div class="card outer">
         <div class="card-body">
             <div class="row">
@@ -391,29 +417,31 @@
             </div>
         </div>
     </div>
-    <div class="card out">
-        <div class="card-body pt-1">
+    <div class="card outer">
+        <div class="card-body">
             <div class="row">
-                {% for item in items %}
-                    <div class="col-3 pb-4 mx-2 main" id="item_{{ item.id }}">
-                        <button class="itembtn" onclick="location.href='/user_item/{{user.id}}/{{item.id}}'">
-                            <div class="card pc">
-                                <img src="{{ item.photo.url }}" class="imgphoto" alt="...">
-                            </div>
-                            <div class="card in">
-                                <h5 class="mt-1">{{ item.name }}</h5>
-                                <p class="des">{{ item.description }}</p>
-                                <p class="cost"><i class="fa-solid fa-indian-rupee-sign"></i>{{ item.cost }}</p>
-
-                                <p class="des">Free Delivery By A to Z</p>
-                            </div>
-                        </button>
-                    </div>
-                {% endfor %}
+                {% if items %}
+                    {% for item in items %}
+                        <div class="col-3 pb-4 mx-2 main" id="item_{{ item.id }}">
+                            <button class="itembtn" onclick="location.href='/user_item/{{ user.id }}/{{ item.id }}'">
+                                <div class="card pc">
+                                    <img src="{{ item.photo.url }}" class="imgphoto" alt="...">
+                                </div>
+                                <div class="card in">
+                                    <h5 class="mt-1">{{ item.name }}</h5>
+                                    <p class="des">{{ item.description }}</p>
+                                    <p class="cost"><i class="fa-solid fa-indian-rupee-sign"></i>{{ item.cost }}</p>
+                                    <p class="des">Free Delivery By A to Z</p>
+                                </div>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No items found.</p>
+                {% endif %}
             </div>
         </div>
     </div>
-
     <script>
         function UpdateProfile(){
             window.location.href = "/user_update/{{user.id}}"

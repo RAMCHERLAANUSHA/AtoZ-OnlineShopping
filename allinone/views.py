@@ -7,6 +7,7 @@ from .models import *
 from .forms import *
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
+from django.db.models import Q
 
 
 # =================================================HomeView=============================================================
@@ -466,14 +467,26 @@ def user_update(request,id):
 
 # ==============================================User-List===============================================================
 
-def user_dashboard(request,id):
-    context = {}
+def user_dashboard(request, id):
     user = User.objects.get(id=id)
-    accessed_items = Item.objects.filter(itemaccess__access=True)
-    categories = AdminCategory.objects.all()
-    context['categories'] = categories
-    context['user'] = user
-    context['items'] = accessed_items
+    query = request.GET.get('q')
+    categories = AdminCategory.objects.all() 
+    if not query:
+        categories = AdminCategory.objects.all()
+    else:
+        categories = []
+    if query:
+        accessed_items = Item.objects.filter(
+            Q(name__icontains=query) | Q(category__category__icontains=query),
+            itemaccess__access=True
+        )
+    else:
+        accessed_items = Item.objects.filter(itemaccess__access=True)
+    context = {
+        'user': user,
+        'items': accessed_items,
+        'categories': categories,
+    }
     return render(request, 'UserDashboard.html', context)
 
 def user_item(request,id,item_id):
