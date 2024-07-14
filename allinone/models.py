@@ -38,18 +38,6 @@ class Item(models.Model):
     category = models.ForeignKey(AdminCategory, on_delete=models.CASCADE)
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
 
-
-class Review(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
-
-    def average_rating(self):
-        reviews = self.review_set.all()
-        if reviews:
-            return sum(review.rating for review in reviews) / reviews.count()
-        return 0
-
 class Message(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     message = models.CharField(max_length=900)
@@ -59,13 +47,6 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     order_date = models.DateTimeField(auto_now_add=True)
-
-class Wishlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('user', 'item')
 
 def generate_otp():
     return ''.join(random.choices(string.digits, k=6))
@@ -86,3 +67,11 @@ class ItemAccess(models.Model):
     item_id = models.OneToOneField(Item,on_delete=models.CASCADE)
     access = models.BooleanField()
     comment = models.CharField(max_length=100,default='Item denied')
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.item.name} in {self.user.username}'s cart"

@@ -40,17 +40,6 @@ class ItemForm(forms.ModelForm):
         self.fields['name'].queryset = Seller.objects.all()
         self.fields['name'].label_from_instance = lambda obj: f"{obj.name}"
 
-class ReviewForm(forms.ModelForm):
-    class Meta:
-        model = Review
-        fields = "__all__"
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['item'].queryset = Item.objects.all()
-        self.fields['item'].label_from_instance = lambda obj: f"{obj.item}"
-        self.fields['user'].queryset = User.objects.all()
-        self.fields['user'].label_from_instance = lambda obj: f"{obj.user}"
-
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
@@ -63,17 +52,6 @@ class OrderForm(forms.ModelForm):
         widgets = {
             'quantity': forms.Select(choices=[(i, str(i)) for i in range(1, 11)])
         }
-
-class WishlistForm(forms.ModelForm):
-    class Meta:
-        model = Wishlist
-        fields = "__all__"
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['item'].queryset = Item.objects.all()
-        self.fields['item'].label_from_instance = lambda obj: f"{obj.item}"
-        self.fields['user'].queryset = User.objects.all()
-        self.fields['user'].label_from_instance = lambda obj: f"{obj.user}"
 
 class EmailForm(forms.Form):
     email = forms.EmailField()

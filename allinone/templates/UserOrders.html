@@ -354,10 +354,7 @@
             <button class="orders"><a class="nav-link active" id="logbtn" href="#" onclick="orders()">Orders</a></button>
         </div>
         <div class="mx-5">
-            <a class="nav-link active" id="logbtn" href="" onclick="cartbtn()"><i class="fa-solid fa-cart-shopping"></i></a>
-        </div>
-        <div class="mx-5">
-            <a class="nav-link active" id="logbtn" href="" onclick="wishlist()"><i class="fa-solid fa-heart"></i></a>
+            <a class="nav-link active" id="logbtn" href="#" onclick="cartbtn()"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
         <ul class="navbar-nav collapse navbar-collapse" id="navbarText">
             <li class="nav-item m-1 position-relative">
@@ -422,17 +419,11 @@
         function logout(){
             window.location.href = "/user_signin/"
         }
-        function catbtn(){
-
+        function cartbtn(){
+            window.location.href = "/view_cart/{{user.id}}"
         }      
-        function wishlist(){
-
-        }
         function orders(){
              window.location.href = "/user_orders/{{user.id}}"
-        }
-        function cartbtn(){
-
         }
         function deletebtn(){
             alert("Order deleted successfully");

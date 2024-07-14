@@ -470,7 +470,7 @@ def user_update(request,id):
 def user_dashboard(request, id):
     user = User.objects.get(id=id)
     query = request.GET.get('q')
-    categories = AdminCategory.objects.all() 
+    categories = AdminCategory.objects.all()
     if not query:
         categories = AdminCategory.objects.all()
     else:
@@ -482,11 +482,13 @@ def user_dashboard(request, id):
         )
     else:
         accessed_items = Item.objects.filter(itemaccess__access=True)
+
     context = {
         'user': user,
         'items': accessed_items,
         'categories': categories,
     }
+
     return render(request, 'UserDashboard.html', context)
 
 def user_item(request,id,item_id):
@@ -532,3 +534,31 @@ def category_wise_products(request, id, category_id):
     context['items'] = accessed_items
     context['categories'] = categories
     return render(request, "CategoryWiseProducts.html", context)
+
+def add_to_cart(request, id, item_id):
+    user = User.objects.get(id=id)
+    item = Item.objects.get(id=item_id)
+    existing_cart_item = Cart.objects.filter(user=user, item=item).first()
+
+    if existing_cart_item:
+        existing_cart_item.quantity += 1
+        existing_cart_item.save()
+    else:
+        new_cart_item = Cart(user=user, item=item)
+        new_cart_item.save()
+    return redirect('user_item', id=user.id, item_id=item.id)
+
+def view_cart(request, id):
+    user = User.objects.get(id=id)
+    user_cart_items = Cart.objects.filter(user_id=id)
+    context = {
+        'items': user_cart_items,
+        'user' : user
+    }
+    return render(request, 'CartList.html', context)
+
+def cart_item_delete(request,cart_id):
+    cart = Cart.objects.get(id=cart_id)
+    user_id = cart.user.id
+    cart.delete()
+    return redirect('/view_cart/' + str(user_id))
