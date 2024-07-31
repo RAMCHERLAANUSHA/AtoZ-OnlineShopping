@@ -311,7 +311,7 @@ def adminLogin(request):
         try:
             a1 = Admin.objects.get(email=email)
             if check_password(password,a1.password):
-                return redirect('/adminList/')
+                return redirect('/admin_list/')
             else:
                 context["comment"] = "Incorrect password.."
                 return render(request,'AdminLogin.html', context)
