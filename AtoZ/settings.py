@@ -144,5 +144,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'anushareddy8677@gmail.com'
-EMAIL_HOST_PASSWORD = 'npcd jwhk lotx wvwt'
+EMAIL_HOST_PASSWORD = 'hijb lghp pves tesv'
 DEFAULT_FROM_EMAIL = 'anushareddy8677@gmail.com'

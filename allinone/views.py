@@ -255,11 +255,9 @@ def password_reset_complete(request):
                     else:
                         user = User.objects.get(email=email)
 
-                    if user_type == 'admin':
-                        user.set_password(new_password)
-                    else:
-                        user.password = make_password(new_password)
+                    user.password = new_password  
                     user.save()
+                    
                     context["success"] = True
                     context["user_type"] = user_type
                     return render(request, 'ResetCompletion.html', context)
@@ -457,7 +455,7 @@ def message_list(request):
 #===========================================Seller-SignIn-SignUp-Update=================================================
 
 def seller_signup(request):
-    
+
     """
     This function handles the signup process for sellers.
 
@@ -479,25 +477,37 @@ def seller_signup(request):
     context = {}
     context['form'] = SellerForm()
     context['data'] = ''
+    
     if request.method == 'POST':
-        if not  validate_mobile_number(request.POST.get("phoneNumber")) and not validate_password(request.POST.get("password")):
-            context['data'] = "Please enter a 10-digit mobile number and Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
-            return render(request,'SellerSignup.html',context)
-        elif not validate_password(request.POST.get("password")):
-            context['data'] = "Password should contain 8 characters and at least one special character,one uppercase letter,one lowercase letter and one digit."
-            return render(request,'SellerSignup.html',context)
-        elif not  validate_mobile_number(request.POST.get("phoneNumber")):
-            context['data'] = "Please enter a 10 digit mobile number"
-            return render(request,'SellerSignup.html',context)
-        form = SellerForm(request.POST,request.FILES)
+        phone_number = request.POST.get("phoneNumber")
+        password = request.POST.get("password")
+
+        if not validate_mobile_number(phone_number) and not validate_password(password):
+            context['data'] = "Please enter a 10-digit mobile number and Password should contain 8 characters and at least one special character, one uppercase letter, one lowercase letter, and one digit."
+            return render(request, 'SellerSignup.html', context)
+
+        elif not validate_password(password):
+            context['data'] = "Password should contain 8 characters and at least one special character, one uppercase letter, one lowercase letter, and one digit."
+            return render(request, 'SellerSignup.html', context)
+
+        elif not validate_mobile_number(phone_number):
+            context['data'] = "Please enter a 10-digit mobile number"
+            return render(request, 'SellerSignup.html', context)
+
+        form = SellerForm(request.POST, request.FILES)
+        
         if form.is_valid():
-            form.save()
-            context['data']=f"{request.POST.get('name')} registered succefully"
-            return render(request,'SellerSignup.html',context)
+            seller = form.save(commit=False)
+            seller.password = password
+            seller.save()
+            context['data'] = f"{request.POST.get('name')} registered successfully"
+            return render(request, 'SellerSignup.html', context)
         else:
-            context['data'] = "Something wrong in given data"
-            return render(request,'SellerSignup.html',context)
-    return render(request,'SellerSignup.html',context)
+            context['data'] = "Something went wrong with the given data"
+            return render(request, 'SellerSignup.html', context)
+
+    return render(request, 'SellerSignup.html', context)
+
 
 def seller_signin(request):
     
